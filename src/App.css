@@ -1,0 +1,68 @@
+.App {
+  text-align: center;
+  color: darkslategrey;
+}
+
+nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 10vh;
+  background: aliceblue;
+}
+
+a {
+  text-decoration: none;
+  color: darkslategrey;
+}
+
+.fs-p75 {
+  font-size: 0.75rem;
+}
+
+.fs-1p5 {
+  font-size: 1.5rem;
+}
+
+.m-1 {
+  margin: 1rem;
+}
+
+.secondary {
+  color: mediumpurple;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+
+.table-container {
+  width: 460px;
+}
+
+.secondary-table {
+  width: 80%;
+  align-self: center;
+}
+
+.nav-links {
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  list-style: none;
+}
+
+.info-icon {
+  transform: translateY(-0.25rem) scale(0.75);
+}
+
+.detail-section {
+  width: calc(100vw - 460px);
+}
