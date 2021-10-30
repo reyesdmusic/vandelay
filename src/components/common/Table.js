@@ -10,16 +10,15 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ToolTip from '@mui/material/Tooltip';
 
-export default function BasicTable({ primaryData, secondaryData, name, setDetails }) {
-  const isWarehouse = primaryData[0].warehouseId || primaryData[0].warehouseId === 0
-  console.log({isWarehouse, primaryData})
+export default function BasicTable({ primaryData, type, setDetails }) {
+  const isWarehouse = type === 'Warehouses'
   const fieldId = isWarehouse ? 'warehouseId' : 'factoryId'
   const fieldName = isWarehouse ? 'warehouseName' : 'factoryName'
 
   return (
       <div className='table-container'>
         <MaterialTable
-          title={name}
+          title={type}
           columns={[
             {
               title: "ID",
@@ -64,11 +63,9 @@ export default function BasicTable({ primaryData, secondaryData, name, setDetail
           data={primaryData}
           options={{ pageSize: 10 }}
           onRowClick={(event, rowData) => {
-            console.log(document, event)
             // Get your id from rowData and use with link.
-            const secondaryDetail = secondaryData[rowData[fieldId]]
-            setDetails(rowData, secondaryDetail)
-            console.log(rowData.warehouseId)
+            // const secondaryDetail = secondaryData[rowData[fieldId]]
+            setDetails(rowData[fieldId], type)
             event.stopPropagation();
           }}
           icons={{

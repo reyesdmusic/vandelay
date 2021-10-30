@@ -1,7 +1,7 @@
 import '../../App.css';
 import SecondaryTable from './SecondaryTable';
 
-function DetailSection({ primaryDetail, secondaryDetail }) {
+function DetailSection({ primaryDetail, secondaryDetail, secondaryCRUD, type }) {
   const { warehouseName, warehouseAddress, warehouseDescription, factoryName, factoryAddress, factoryDescription } = primaryDetail
   const addressData = warehouseAddress || factoryAddress
   const { buildingName, streetLine1, streetLine2, city, stateProvince, zipPostalCode, country } = addressData
@@ -9,7 +9,6 @@ function DetailSection({ primaryDetail, secondaryDetail }) {
   const address = `${streetLine1}${streetLine2 ? ` ${streetLine2}` : ''}`
   const cityStateCountry = `${city}, ${stateProvince} ${zipPostalCode} ${country}`
   const description = warehouseDescription || factoryDescription
-  console.log({primaryDetail})
 
   return (
     <section className="detail-section flex-column-center">
@@ -18,7 +17,7 @@ function DetailSection({ primaryDetail, secondaryDetail }) {
       <span>{address}</span>
       <span>{cityStateCountry}</span>
       <span className="m-1">{description}</span>
-      <SecondaryTable secondaryDetail={secondaryDetail} />
+      <SecondaryTable secondaryDetail={secondaryDetail} secondaryCRUD={secondaryCRUD} type={type} />
     </section>
   );
 }

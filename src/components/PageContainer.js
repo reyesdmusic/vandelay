@@ -1,20 +1,13 @@
 import '../App.css';
 import Table from './common/Table';
 import DetailSection from './common/DetailSection';
-import { useState } from 'react';
 
-function PageContainer({ name, primaryData, secondaryData }) {
-  const [primaryDetail, setPrimaryDetail] = useState(primaryData[0])
-  const [secondaryDetail, setSecondaryDetail] = useState(secondaryData["0"])
+function PageContainer({ type, primaryCRUD, secondaryCRUD, setDetails, allPrimaryData, primaryDetail, secondaryDetail }) {
 
-  function setDetails (newPrimaryDetail, newSecondaryDetail) {
-    setSecondaryDetail(newSecondaryDetail)
-    setPrimaryDetail(newPrimaryDetail)
-  }
   return (
     <div className="display-flex">
-      <Table primaryData={primaryData} secondaryData={secondaryData} name={name} setDetails={setDetails} />
-      <DetailSection className="detail-section" primaryDetail={primaryDetail} secondaryDetail={secondaryDetail} />
+      <Table primaryData={allPrimaryData} setDetails={setDetails} type={type} />
+      <DetailSection className="detail-section" primaryDetail={primaryDetail} secondaryDetail={secondaryDetail} secondaryCRUD={secondaryCRUD} type={type}/>
     </div>
   );
 }

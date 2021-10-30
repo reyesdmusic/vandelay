@@ -8,7 +8,7 @@ function Nav({ pages }) {
         <h3>Vandelay</h3>
       </Link>
       <ul className="nav-links">
-        {pages.map(({ name, url }) => <Link to={url} key={name}><li>{name}</li></Link>)}
+        {pages.map(({ type, url }) => <Link to={url} key={type}><li>{type}</li></Link>)}
       </ul>
     </nav>
   );

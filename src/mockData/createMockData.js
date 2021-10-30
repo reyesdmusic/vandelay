@@ -72,11 +72,9 @@ async function getWarehouses () {
     }
 
     fs.writeFile('warhouses.json', JSON.stringify(warehouses), 'utf8', err => err ? console.log(err) : '');
-    // console.log(warehouses)
 }
 
 async function getInventory () {
-    console.log('called')
     const inventory = {}
     for (let i = 0; i <= 50; i++) {
         const warehouseId = i
@@ -96,7 +94,6 @@ async function getInventory () {
                 itemName,
                 itemDescription
             }
-            console.log(inventoryItem)
             if (inventory[warehouseId]) {
                 inventory[warehouseId] = [...inventory[warehouseId], inventoryItem]
             } else {
@@ -104,7 +101,6 @@ async function getInventory () {
             }
         }
     }
-    console.log(inventory)
     fs.writeFile('inventory.json', JSON.stringify(inventory), 'utf8', err => err ? console.log(err) : '');
     
 }
@@ -125,7 +121,6 @@ async function getMachines () {
                 machineName,
                 machineDescription
             }
-            console.log(machine)
             if (machines[factoryId]) {
                 machines[factoryId] = [...machines[factoryId], machine]
             } else {
@@ -156,7 +151,6 @@ async function getFactories () {
     }
 
     fs.writeFile('factories.json', JSON.stringify(factories), 'utf8', err => err ? console.log(err) : '');
-    // console.log(warehouses)
 }
 
 getMachines()

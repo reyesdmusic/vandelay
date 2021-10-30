@@ -7,12 +7,41 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useState } from 'react';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
-export default function SecondaryTable({ secondaryDetail }) {
-  
-  console.log({secondaryDetail})
-  const isWarehouse = secondaryDetail[0].warehouseId || secondaryDetail[0].warehouseId === 0
+export default function SecondaryTable({ secondaryDetail, secondaryCRUD, type }) {
+  const [open, setOpen] = useState(false);
+  const [editData, setEditData] = useState({});
+  const { deleteItem, deleteMachine } = secondaryCRUD
+  const deleteSecondaryItem = deleteItem || deleteMachine
+  const isWarehouse = type === 'Warehouses'
   const title = isWarehouse ? 'INVENTORY ITEMS' : 'MACHINES'
+  const primaryIdKey = isWarehouse ? 'warehouseId' : 'factoryId'
+  const secondaryIdKey = isWarehouse ? 'itemId' : 'machineId'
+  const secondaryNameKey = isWarehouse ? 'itemName' : 'machineName'
+
+  const handleClickOpen = ({ event, rowData }) => {
+    setEditData(rowData);
+    setOpen(true);
+  };
+
+  const handleDelete = () => {
+    deleteSecondaryItem(editData[secondaryIdKey], editData[primaryIdKey]);
+    handleClose();
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   let columns = []
   if (isWarehouse) {
@@ -62,14 +91,48 @@ export default function SecondaryTable({ secondaryDetail }) {
       }
     ]
   }
+
   return (
       <div className="m-1 secondary-table">
+        <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        >
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to remove {editData[secondaryNameKey]} (ID: {editData[secondaryIdKey]})?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>NO</Button>
+            <Button onClick={handleDelete} autoFocus>YES, REMOVE</Button>
+          </DialogActions>
+        </Dialog>
         <MaterialTable
-          title={title}
-          columns={columns}
+          title={ title }
+          columns={ columns }
           data={ secondaryDetail }
-          options={{ pageSize: 5 }}
+          options={{ pageSize: 5, actionsColumnIndex: -1 }}
+          localization={{
+            header: {
+                actions: 'ACTIONS'
+            }
+        }}
+          actions={[
+            {
+              icon: forwardRef((props, ref) => <DeleteIcon {...props} ref={ref} />),
+              tooltip: "Delete",
+              onClick: (event, rowData) => {
+                handleClickOpen({event, rowData})
+              }
+            }
+          ]}
           icons={{
+            Add: forwardRef((props, ref) => <AddIcon {...props} ref={ref} />),
+            Delete: forwardRef((props, ref) => <DeleteIcon {...props} ref={ref} />),
+            Edit: forwardRef((props, ref) => <EditIcon {...props} ref={ref} />),
             Clear: forwardRef((props, ref) => <ClearIcon {...props} ref={ref} />),
             Search: forwardRef((props, ref) => <SearchIcon {...props} ref={ref} />),
             ResetSearch: forwardRef((props, ref) => <ClearIcon {...props} ref={ref} />),
