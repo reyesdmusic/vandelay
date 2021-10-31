@@ -17,7 +17,6 @@ const allReducers = combineReducers({
     warehouseDetailReducer,
     inventoryDetailReducer,
     machineDetailReducer
-
 })
 
 export default allReducers;

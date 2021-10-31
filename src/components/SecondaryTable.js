@@ -16,12 +16,14 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
+import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteItem, deleteMachine } from '../redux/actions'
+import { deleteItem, deleteMachine, editItem, editMachine } from '../redux/actions'
 
 export default function SecondaryTable({ type }) {
-  const [open, setOpen] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
   const [editData, setEditData] = useState({});
   const dispatch = useDispatch()
   const isWarehouse = type === 'Warehouses'
@@ -30,10 +32,14 @@ export default function SecondaryTable({ type }) {
   const primaryIdKey = isWarehouse ? 'warehouseId' : 'factoryId'
   const secondaryIdKey = isWarehouse ? 'itemId' : 'machineId'
   const secondaryNameKey = isWarehouse ? 'itemName' : 'machineName'
-
-  const handleClickOpen = ({ event, rowData }) => {
+  const handleClickOpen = ({ event, rowData, actionType }) => {
     setEditData(rowData);
-    setOpen(true);
+    if (actionType === 'delete') {
+      setOpenDeleteModal(true);
+    } else {
+      setOpenEditModal(true);
+    }
+    
   };
 
   const handleDelete = () => {
@@ -42,12 +48,32 @@ export default function SecondaryTable({ type }) {
     } else {
       dispatch(deleteMachine(editData[primaryIdKey], editData[secondaryIdKey]))
     }
-    
-    handleClose();
+    const actionType = 'delete'
+    handleClose(actionType);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleEdit = (e) => {
+    const formEl = e.target.parentNode.parentNode
+    const inputs = formEl.querySelectorAll('input')
+    const originalIds = { originalPrimaryId: editData[primaryIdKey], originalSecondaryId: editData[secondaryIdKey] }
+    const newFields = {}
+    inputs.forEach(input => newFields[input.parentNode.parentNode.dataset.key] = input.type === 'number' ? +input.value : input.value)
+    const editObj = { originalIds, newFields }
+    if (isWarehouse) {
+      dispatch(editItem(editObj))
+    } else {
+      dispatch(editMachine(editObj))
+    }
+    const actionType = 'edit'
+    handleClose(actionType);
+  };
+
+  const handleClose = (actionType) => {
+    if (actionType === 'delete') {
+      setOpenDeleteModal(false);
+    } else {
+      setOpenEditModal(false);
+    }
   };
 
   let columns = []
@@ -99,13 +125,33 @@ export default function SecondaryTable({ type }) {
     ]
   }
 
+  let inputFields
+
+  if (isWarehouse) {
+    inputFields = [
+      { dataKey: 'warehouseId', dataType: 'number', label: 'Warehouse ID'},
+      { dataKey: 'itemId', dataType: 'number', label: 'Item ID'},
+      { dataKey: 'itemSKU', dataType: 'number', label: 'Item SKU'},
+      { dataKey: 'itemQuantity', dataType: 'number', label: 'Item Quantity'},
+      { dataKey: 'itemName', dataType: 'text', label: 'Item Name'},
+      { dataKey: 'itemDescription', dataType: 'text', label: 'Description'}
+    ]
+  } else {
+    inputFields = [
+      { dataKey: 'factoryId', dataType: 'number', label: 'Factory ID'},
+      { dataKey: 'machineId', dataType: 'number', label: 'Machine ID'},
+      { dataKey: 'machineName', dataType: 'text', label: 'Machine Name'},
+      { dataKey: 'machineDescription', dataType: 'text', label: 'Description'}
+    ]
+  }
+
   return (
       <div className="m-1 secondary-table">
         <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+          open={openDeleteModal}
+          onClose={() => handleClose('delete')}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
         >
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
@@ -113,9 +159,32 @@ export default function SecondaryTable({ type }) {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose}>NO</Button>
+            <Button onClick={() => handleClose('delete')}>NO</Button>
             <Button onClick={handleDelete} autoFocus>YES, REMOVE</Button>
           </DialogActions>
+        </Dialog>
+        <Dialog open={openEditModal} onClose={() => handleClose('edit')}>
+          <DialogTitle>EDIT {editData[secondaryNameKey]} (ID: {editData[secondaryIdKey]})</DialogTitle>
+            <DialogContent>
+            {inputFields.map((field) => {
+              return <TextField
+              key={field.name}
+              margin="dense"
+              id={field.name}
+              label={field.label}
+              defaultValue={editData[field.dataKey]}
+              type={field.dataType}
+              data-key={field.dataKey}
+              fullWidth
+              variant="standard"
+            />
+            })}
+            
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => handleClose('edit')}>CANCEL</Button>
+            <Button onClick={handleEdit}>SAVE</Button>
+          </DialogActions>  
         </Dialog>
         <MaterialTable
           title={ title }
@@ -132,7 +201,16 @@ export default function SecondaryTable({ type }) {
               icon: forwardRef((props, ref) => <DeleteIcon {...props} ref={ref} />),
               tooltip: "Delete",
               onClick: (event, rowData) => {
-                handleClickOpen({event, rowData})
+                const actionType = 'delete'
+                handleClickOpen({event, rowData, actionType})
+              }
+            },
+            {
+              icon: forwardRef((props, ref) => <EditIcon {...props} ref={ref} />),
+              tooltip: "Edit",
+              onClick: (event, rowData) => {
+                const actionType = 'edit'
+                handleClickOpen({event, rowData, actionType})
               }
             }
           ]}

@@ -2,6 +2,13 @@ const machines = require('../../mockData/machines.json');
 
 const machineDetailReducer = (state = machines[0], action) => {
     switch (action.type) {
+        case 'editMachine':
+            const { originalIds, newFields } = action.payload
+            const newState = [...state]
+            const itemIndex = newState.findIndex(item => item.machineId === originalIds.originalSecondaryId)
+            newState[itemIndex] = {...newFields}
+            state = [...newState]
+            return state;
         case 'deleteMachine':
             const { secondaryId } = action.payload
             const machineDetail = state

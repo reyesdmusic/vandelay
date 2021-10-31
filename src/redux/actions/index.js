@@ -39,3 +39,17 @@ export const deleteMachine = (primaryId, secondaryId) => {
         payload: { primaryId, secondaryId }
     }
 };
+
+export const editMachine = (editObj) => {
+    return {
+        type: 'editMachine',
+        payload: editObj
+    }
+};
+
+export const editItem = (editObj) => {
+    return {
+        type: 'editItem',
+        payload: editObj
+    }
+};

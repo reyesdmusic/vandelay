@@ -1,8 +1,14 @@
-
 const inventory = require('../../mockData/inventory.json');
 
 const inventoryDetailReducer = (state = inventory[0], action) => {
     switch (action.type) {
+        case 'editItem':
+            const { originalIds, newFields } = action.payload
+            const newState = [...state]
+            const itemIndex = newState.findIndex(item => item.itemId === originalIds.originalSecondaryId)
+            newState[itemIndex] = {...newFields}
+            state = [...newState]
+            return state;
         case 'deleteItem':
             const { secondaryId } = action.payload
             const inventoryDetail = state
