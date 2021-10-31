@@ -3,6 +3,13 @@ const inventory = require('../../mockData/inventory.json');
 
 const allInventoryReducer = (state = inventory, action) => {
     switch (action.type) {
+        case 'addItem':{
+            const { newFields } = action.payload
+            const newAllInventory = {...state}
+            newAllInventory[newFields.warehouseId] = [...newAllInventory[newFields.warehouseId], newFields]
+            state = { ...newAllInventory }
+            return state;
+        }
         case 'editItem': {
             const { originalIds, newFields } = action.payload
             const { originalPrimaryId, originalSecondaryId } = originalIds

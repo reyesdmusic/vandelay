@@ -53,3 +53,17 @@ export const editItem = (editObj) => {
         payload: editObj
     }
 };
+
+export const addMachine = (addObj) => {
+    return {
+        type: 'addMachine',
+        payload: addObj
+    }
+};
+
+export const addItem = (addObj) => {
+    return {
+        type: 'addItem',
+        payload: addObj
+    }
+};

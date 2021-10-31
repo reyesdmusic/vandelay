@@ -19,11 +19,12 @@ import DialogContentText from '@mui/material/DialogContentText';
 import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteItem, deleteMachine, editItem, editMachine } from '../redux/actions'
+import { deleteItem, deleteMachine, editItem, editMachine, addItem, addMachine } from '../redux/actions'
 
 export default function SecondaryTable({ type }) {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
+  const [openAddModal, setOpenAddModal] = useState(false);
   const [editData, setEditData] = useState({});
   const dispatch = useDispatch()
   const isWarehouse = type === 'Warehouses'
@@ -34,12 +35,18 @@ export default function SecondaryTable({ type }) {
   const secondaryNameKey = isWarehouse ? 'itemName' : 'machineName'
   const handleClickOpen = ({ event, rowData, actionType }) => {
     setEditData(rowData);
-    if (actionType === 'delete') {
-      setOpenDeleteModal(true);
-    } else {
-      setOpenEditModal(true);
+
+    switch (actionType) {
+      case 'edit':
+        setOpenEditModal(true);
+        break;
+      case 'delete':
+        setOpenDeleteModal(true);
+        break;
+      case 'add':
+        setOpenAddModal(true);
+        break;
     }
-    
   };
 
   const handleDelete = () => {
@@ -68,11 +75,34 @@ export default function SecondaryTable({ type }) {
     handleClose(actionType);
   };
 
-  const handleClose = (actionType) => {
-    if (actionType === 'delete') {
-      setOpenDeleteModal(false);
+  const handleAdd = (e) => {
+    const formEl = e.target.parentNode.parentNode
+    const inputs = formEl.querySelectorAll('input')
+    const primaryIdFieldName = isWarehouse ? 'warehouseId' : 'factoryId'
+    const primaryId = secondaryDetail[0][primaryIdFieldName]
+    const newFields = { [primaryIdFieldName]: primaryId }
+    inputs.forEach(input => newFields[input.parentNode.parentNode.dataset.key] = input.type === 'number' ? +input.value : input.value)
+    const addObj = { newFields }
+    if (isWarehouse) {
+      dispatch(addItem(addObj))
     } else {
-      setOpenEditModal(false);
+      dispatch(addMachine(addObj))
+    }
+    const actionType = 'add'
+    handleClose(actionType);
+  };
+
+  const handleClose = (actionType) => {
+    switch (actionType) {
+      case 'edit':
+        setOpenEditModal(false);
+        break;
+      case 'delete':
+        setOpenDeleteModal(false);;
+        break;
+      case 'add':
+        setOpenAddModal(false);
+        break;
     }
   };
 
@@ -129,7 +159,7 @@ export default function SecondaryTable({ type }) {
 
   if (isWarehouse) {
     inputFields = [
-      { dataKey: 'warehouseId', dataType: 'number', label: 'Warehouse ID'},
+      // { dataKey: 'warehouseId', dataType: 'number', label: 'Warehouse ID'},
       { dataKey: 'itemId', dataType: 'number', label: 'Item ID'},
       { dataKey: 'itemSKU', dataType: 'number', label: 'Item SKU'},
       { dataKey: 'itemQuantity', dataType: 'number', label: 'Item Quantity'},
@@ -138,7 +168,7 @@ export default function SecondaryTable({ type }) {
     ]
   } else {
     inputFields = [
-      { dataKey: 'factoryId', dataType: 'number', label: 'Factory ID'},
+      // { dataKey: 'factoryId', dataType: 'number', label: 'Factory ID'},
       { dataKey: 'machineId', dataType: 'number', label: 'Machine ID'},
       { dataKey: 'machineName', dataType: 'text', label: 'Machine Name'},
       { dataKey: 'machineDescription', dataType: 'text', label: 'Description'}
@@ -147,6 +177,28 @@ export default function SecondaryTable({ type }) {
 
   return (
       <div className="m-1 secondary-table">
+         <Dialog open={openAddModal} onClose={() => handleClose('add')}>
+          <DialogTitle>ADD NEW {isWarehouse ? 'ITEM' : 'MACHINE'}</DialogTitle>
+            <DialogContent>
+            {inputFields.map((field) => {
+              return <TextField
+              key={field.name}
+              margin="dense"
+              id={field.name}
+              label={field.label}
+              type={field.dataType}
+              data-key={field.dataKey}
+              fullWidth
+              variant="standard"
+            />
+            })}
+            
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => handleClose('add')}>CANCEL</Button>
+            <Button onClick={handleAdd}>SAVE</Button>
+          </DialogActions>  
+        </Dialog>
         <Dialog
           open={openDeleteModal}
           onClose={() => handleClose('delete')}
@@ -210,6 +262,15 @@ export default function SecondaryTable({ type }) {
               tooltip: "Edit",
               onClick: (event, rowData) => {
                 const actionType = 'edit'
+                handleClickOpen({event, rowData, actionType})
+              }
+            },
+            {
+              icon: forwardRef((props, ref) => <AddIcon {...props} ref={ref} />),
+              tooltip: `${isWarehouse ? 'ADD ITEM' : 'ADD MACHINE'}`,
+              isFreeAction: true,
+              onClick: (event, rowData) => {
+                const actionType = 'add'
                 handleClickOpen({event, rowData, actionType})
               }
             }

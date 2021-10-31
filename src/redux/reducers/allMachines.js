@@ -3,6 +3,13 @@ const machines = require('../../mockData/machines.json');
 
 const allMachinesReducer = (state = machines, action) => {
     switch (action.type) {
+        case 'addMachine':{
+            const { newFields } = action.payload
+            const newAllInventory = {...state}
+            newAllInventory[newFields.factoryId] = [...newAllInventory[newFields.factoryId], newFields]
+            state = { ...newAllInventory }
+            return state;
+        }
         case 'editMachine': {
             const { originalIds, newFields } = action.payload
             const { originalPrimaryId, originalSecondaryId } = originalIds
