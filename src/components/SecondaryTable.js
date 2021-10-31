@@ -18,7 +18,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteItem, deleteMachine } from '../../redux/actions'
+import { deleteItem, deleteMachine } from '../redux/actions'
 
 export default function SecondaryTable({ type }) {
   const [open, setOpen] = useState(false);

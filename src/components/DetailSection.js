@@ -1,4 +1,3 @@
-import '../../App.css';
 import SecondaryTable from './SecondaryTable';
 import { useSelector } from 'react-redux';
 

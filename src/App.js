@@ -1,5 +1,5 @@
 import './App.css';
-import Nav from './components/common/Nav';
+import Nav from './components/Nav';
 import PageContainer from './components/PageContainer';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import pageConfigs from './pageConfigs';

@@ -10,9 +10,9 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ToolTip from '@mui/material/Tooltip';
 import { useSelector, useDispatch } from 'react-redux';
-import { setFactoryDetail, setWarehouseDetail, setInventoryDetail, setMachineDetail } from '../../redux/actions'
+import { setFactoryDetail, setWarehouseDetail, setInventoryDetail, setMachineDetail } from '../redux/actions'
 
-export default function BasicTable({ type }) {
+export default function PrimaryTable({ type }) {
   const isWarehouse = type === 'Warehouses'
   const primaryData = useSelector(state => isWarehouse ? state.allWarehousesReducer : state.allFactoriesReducer);
   const secondaryData = useSelector(state => isWarehouse ? state.allInventoryReducer : state.allMachinesReducer);
