@@ -1,7 +1,11 @@
 import '../../App.css';
 import SecondaryTable from './SecondaryTable';
+import { useSelector } from 'react-redux';
 
-function DetailSection({ primaryDetail, secondaryDetail, secondaryCRUD, type }) {
+
+function DetailSection({ type }) {
+  const isWarehouse = type === 'Warehouses'
+  const primaryDetail = useSelector(state => isWarehouse ? state.warehouseDetailReducer : state.factoryDetailReducer);
   const { warehouseName, warehouseAddress, warehouseDescription, factoryName, factoryAddress, factoryDescription } = primaryDetail
   const addressData = warehouseAddress || factoryAddress
   const { buildingName, streetLine1, streetLine2, city, stateProvince, zipPostalCode, country } = addressData
@@ -17,7 +21,7 @@ function DetailSection({ primaryDetail, secondaryDetail, secondaryCRUD, type }) 
       <span>{address}</span>
       <span>{cityStateCountry}</span>
       <span className="m-1">{description}</span>
-      <SecondaryTable secondaryDetail={secondaryDetail} secondaryCRUD={secondaryCRUD} type={type} />
+      <SecondaryTable type={type} />
     </section>
   );
 }

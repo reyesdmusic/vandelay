@@ -17,13 +17,15 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteItem, deleteMachine } from '../../redux/actions'
 
-export default function SecondaryTable({ secondaryDetail, secondaryCRUD, type }) {
+export default function SecondaryTable({ type }) {
   const [open, setOpen] = useState(false);
   const [editData, setEditData] = useState({});
-  const { deleteItem, deleteMachine } = secondaryCRUD
-  const deleteSecondaryItem = deleteItem || deleteMachine
+  const dispatch = useDispatch()
   const isWarehouse = type === 'Warehouses'
+  const secondaryDetail = useSelector(state => isWarehouse ? state.inventoryDetailReducer : state.machineDetailReducer);
   const title = isWarehouse ? 'INVENTORY ITEMS' : 'MACHINES'
   const primaryIdKey = isWarehouse ? 'warehouseId' : 'factoryId'
   const secondaryIdKey = isWarehouse ? 'itemId' : 'machineId'
@@ -35,7 +37,12 @@ export default function SecondaryTable({ secondaryDetail, secondaryCRUD, type })
   };
 
   const handleDelete = () => {
-    deleteSecondaryItem(editData[secondaryIdKey], editData[primaryIdKey]);
+    if (isWarehouse) {
+      dispatch(deleteItem(editData[primaryIdKey], editData[secondaryIdKey]))
+    } else {
+      dispatch(deleteMachine(editData[primaryIdKey], editData[secondaryIdKey]))
+    }
+    
     handleClose();
   };
 

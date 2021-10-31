@@ -9,9 +9,14 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ToolTip from '@mui/material/Tooltip';
+import { useSelector, useDispatch } from 'react-redux';
+import { setFactoryDetail, setWarehouseDetail, setInventoryDetail, setMachineDetail } from '../../redux/actions'
 
-export default function BasicTable({ primaryData, type, setDetails }) {
+export default function BasicTable({ type }) {
   const isWarehouse = type === 'Warehouses'
+  const primaryData = useSelector(state => isWarehouse ? state.allWarehousesReducer : state.allFactoriesReducer);
+  const secondaryData = useSelector(state => isWarehouse ? state.allInventoryReducer : state.allMachinesReducer);
+  const dispatch = useDispatch()
   const fieldId = isWarehouse ? 'warehouseId' : 'factoryId'
   const fieldName = isWarehouse ? 'warehouseName' : 'factoryName'
 
@@ -63,9 +68,15 @@ export default function BasicTable({ primaryData, type, setDetails }) {
           data={primaryData}
           options={{ pageSize: 10 }}
           onRowClick={(event, rowData) => {
-            // Get your id from rowData and use with link.
-            // const secondaryDetail = secondaryData[rowData[fieldId]]
-            setDetails(rowData[fieldId], type)
+
+            if (isWarehouse) {
+              dispatch(setWarehouseDetail(rowData[fieldId], primaryData))
+              dispatch(setInventoryDetail(rowData[fieldId], secondaryData))
+            } else {
+              dispatch(setFactoryDetail(rowData[fieldId], primaryData))
+              dispatch(setMachineDetail(rowData[fieldId], secondaryData))
+            }
+            
             event.stopPropagation();
           }}
           icons={{
