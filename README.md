@@ -1,70 +1,71 @@
-# Getting Started with Create React App
+# VANDELAY WAREHOUSE AND FACTORY MANAGEMENT APP
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Table of Contents
 
-## Available Scripts
+- [About](#About)
+- [UI](#UI)
+- [Dependencies](#Dependencies)
+- [Contact](#Contact)
 
-In the project directory, you can run:
+## About
 
-### `npm start`
+This application allows a user to view Warehouse and Factory data along with either Inventory or Machine data. A user can easily toggle between factory and warehouse modes via links in the nav bar.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+All data is displayed in grids and is searchable as well as paginated.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Within a given Factory or Warehouse detail, users can Add, Edit, and Delete existing Inventory Items or Machines.
 
-### `npm test`
+After every action, a snackbar appears.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+On mobile and other smaller screens, only a list of either Warehouses or Factories appears. Once a warehouse or factory is selected, its corresponding details and inventory or machine data slides in.
 
-### `npm run build`
+See the deployed app [here](https://reyesdmusic.github.io/vandelay/).
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## UI
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Desktop
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## <img width="400" src='./src/assets/desktopView.png'>
 
-### `npm run eject`
+Search
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## <img width="200" src='./src/assets/primarySearch.png'>
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## <img width="600" src='./src/assets/secondarySearch.png'>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Pagination
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## <img width="300" src='./src/assets/pagination.png'>
 
-## Learn More
+Mobile
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## <img width="300" src='./src/assets/mobilePrimary.png'>
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Slide Detail
 
-### Code Splitting
+## <img width="300" src='./src/assets/slideIn.png'>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Snackbar
 
-### Analyzing the Bundle Size
+## <img width="600" src='./src/assets/snackBar.png'>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Tool Tips
 
-### Making a Progressive Web App
+## <img width="600" src='./src/assets/toolTip.png'>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Dependencies
 
-### Advanced Configuration
+[React](https://reactjs.org/) was used to create the UI. The following libraries comprise bits and pieces of functionality:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- [material ui](https://mui.com/)
+- [material-table](https://material-table.com/#/)
+- [redux](https://redux.js.org/)
+- [react-redux](https://react-redux.js.org/)
 
-### Deployment
+## Contact
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Danny Reyes
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- [GitHub](https://github.com/reyesdmusic)
+- [LinkedIn](https://www.linkedin.com/in/danny-reyes-dev/)
+- email: vdannyreyesdev@gmail.com

@@ -48,17 +48,6 @@ async function getWarehouses () {
         const warehouseId = i
         const warehouseName = `${getRandomInt() > 500 ? names[getRandomInt(names.length)] : getRandomInt()} ${llc[getRandomInt(llc.length)]}`
         const warehouseDescription = await getText()
-        // const address = getAddress(warehouseName)
-        // const { 
-        //     buildingName,
-        //     streetLine1,
-        //     streetLine2,
-        //     city,
-        //     stateProvince,
-        //     zipPostalCode,
-        //     country
-        // } = address
-        // const warehouseAddress = `${buildingName}, ${streetLine1} ${streetLine2} ${city}, ${stateProvince} ${zipPostalCode} ${country}`
         const warehouseAddress = getAddress(warehouseName)
         const warehouse = {
             warehouseId,
