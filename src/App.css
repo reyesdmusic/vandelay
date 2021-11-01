@@ -60,6 +60,10 @@ a {
   font-weight: 600;
 }
 
+.logo {
+  width: 40px;
+}
+
 .active-link {
   color: rgb(184, 217, 255);
   font-weight: 600;
@@ -67,6 +71,12 @@ a {
 
 .display-flex {
   display: flex;
+}
+
+.display-flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .flex-column-center {

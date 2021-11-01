@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import logo from '../assets/logo.png'
 
 function Nav({ pages }) {
   const addClickedClass = e => {
@@ -22,7 +23,8 @@ function Nav({ pages }) {
 
   return (
     <nav>
-      <Link onClick={addClickedClass} className="logo-link" to="/vandelay/warehouses">
+      <Link onClick={addClickedClass} className="logo-link display-flex-center" to="/vandelay/warehouses">
+        <img className="logo m-1" alt="app logo" src={logo} />
         <h3 className="logo-link">VANDELAY</h3>
       </Link>
       <ul className="nav-links">
