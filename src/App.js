@@ -19,12 +19,9 @@ const store = createStore(allReducers,window.__REDUX_DEVTOOLS_EXTENSION__ && win
             <Route exact path="/vandelay">
               <Redirect to="/vandelay/warehouses" />
             </Route>
-            {pageConfigs.map(({ type, url }) => (
-              <Route
-                key={type} 
-                path={url} 
-                render={props => (<PageContainer { ...props } type={type} />)}
-              />))}
+            {pageConfigs.map((config) => {
+              const { type, url } = config
+              return <Route key={type} path={url} render={props => (<PageContainer { ...props } type={type} config={config} />)} />})}
           </Switch>
         </div>
       </Router>

@@ -14,16 +14,13 @@ import { setFactoryDetail, setWarehouseDetail, setInventoryDetail, setMachineDet
 
 // Primary table is displayed as a side bar on larger screens
 // Primary Data is either Warehouse data or Factory data
-export default function PrimaryTable({ type }) {
-  const isWarehouse = type === 'Warehouses';
+export default function PrimaryTable({ config }) {
+  const { isWarehouse, primaryReducer, secondaryReducer, primaryIdKey, primaryNameKey, secondaryIdKey, type } = config;
 
   const dispatch = useDispatch();
 
-  const primaryData = useSelector(state => isWarehouse ? state.allWarehousesReducer : state.allFactoriesReducer);
-  const secondaryData = useSelector(state => isWarehouse ? state.allInventoryReducer : state.allMachinesReducer);
-  
-  const fieldId = isWarehouse ? 'warehouseId' : 'factoryId';
-  const fieldName = isWarehouse ? 'warehouseName' : 'factoryName';
+  const primaryData = useSelector(state => state[primaryReducer]);
+  const secondaryData = useSelector(state => state[secondaryReducer]);
 
   useEffect(() => {
 
@@ -61,10 +58,10 @@ export default function PrimaryTable({ type }) {
           columns={[
             {
               title: "ID",
-              field: fieldId,
+              field: primaryIdKey,
               width: "15%",
               render: rowData => {
-                const id = isWarehouse ? rowData.warehouseId : rowData.factoryId
+                const id = rowData[secondaryIdKey]
                 return (
                   <div>
                     <div>{id}</div>
@@ -73,7 +70,7 @@ export default function PrimaryTable({ type }) {
             },
             {
               title: "Name",
-              field: fieldName,
+              field: primaryNameKey,
               width: "85%",
               render: rowData => {
                 const { warehouseName, warehouseAddress, warehouseDescription, factoryName, factoryAddress, factoryDescription } = rowData
@@ -113,11 +110,11 @@ export default function PrimaryTable({ type }) {
             }
             
             if (isWarehouse) {
-              dispatch(setWarehouseDetail(rowData[fieldId], primaryData))
-              dispatch(setInventoryDetail(rowData[fieldId], secondaryData))
+              dispatch(setWarehouseDetail(rowData[primaryIdKey], primaryData))
+              dispatch(setInventoryDetail(rowData[primaryIdKey], secondaryData))
             } else {
-              dispatch(setFactoryDetail(rowData[fieldId], primaryData))
-              dispatch(setMachineDetail(rowData[fieldId], secondaryData))
+              dispatch(setFactoryDetail(rowData[primaryIdKey], primaryData))
+              dispatch(setMachineDetail(rowData[primaryIdKey], secondaryData))
             }
 
             dispatch(setActiveDetailClass())

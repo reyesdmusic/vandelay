@@ -2,11 +2,11 @@ import '../App.css';
 import PrimaryTable from './PrimaryTable';
 import DetailSection from './DetailSection';
 
-function PageContainer({ type }) {
+function PageContainer({ config }) {
   return (
     <div className="display-flex">
-      <PrimaryTable type={type} />
-      <DetailSection className="detail-section" type={type}/>
+      <PrimaryTable config={config} />
+      <DetailSection className="detail-section" config={config} />
     </div>
   );
 }

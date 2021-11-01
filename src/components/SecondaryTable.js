@@ -24,7 +24,7 @@ import { deleteItem, deleteMachine, editItem, editMachine, addItem, addMachine, 
 
 // Secondary table displays Inventory or Machine data
 // CRUD functionality is enabled within this component
-export default function SecondaryTable({ type, primaryId }) {
+export default function SecondaryTable({ primaryId, config }) {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -32,20 +32,25 @@ export default function SecondaryTable({ type, primaryId }) {
   const [snackBarMessage, setSnackBarMessage] = useState("Success!");
   const [editData, setEditData] = useState({});
 
-  const isWarehouse = type === 'Warehouses';
+  const { 
+    isWarehouse, 
+    primaryIdKey, 
+    secondaryNameKey, 
+    secondaryIdKey, 
+    secondaryTableTitle, 
+    secondaryDetailReducer,
+    inputFields 
+  } = config;
 
   const dispatch = useDispatch();
   
   // secondaryDetail is either the Inventory Detail or the Machine Detail
   // Set the properties based on whether we are in Warehouse mode or Factory mode
-  const secondaryDetail = useSelector(state => isWarehouse ? state.inventoryDetailReducer : state.machineDetailReducer);
-  const title = isWarehouse ? 'INVENTORY ITEMS' : 'MACHINES';
-  const primaryIdKey = isWarehouse ? 'warehouseId' : 'factoryId';
-  const secondaryIdKey = isWarehouse ? 'itemId' : 'machineId';
-  const secondaryNameKey = isWarehouse ? 'itemName' : 'machineName';
+  const secondaryDetail = useSelector(state => state[secondaryDetailReducer]);
+  
   const id = (primaryId || secondaryDetail[0][primaryIdKey] ) || (editData[primaryIdKey] || 0);
 
-  const handleClickOpen = ({ event, rowData, actionType }) => {
+  const handleClickOpen = ({ rowData, actionType }) => {
     setEditData(rowData);
 
     switch (actionType) {
@@ -113,11 +118,11 @@ export default function SecondaryTable({ type, primaryId }) {
 
     if (isWarehouse) {
       dispatch(addItem(addObj));
-      const snackBarMessage = `${newFields.itemName} ID: ${newFields.itemId} has been successfully add to Warehouse ${id}.`;
+      const snackBarMessage = `${newFields.itemName} ID: ${newFields.itemId} has been successfully added to Warehouse ${id}.`;
       setSnackBarMessage(snackBarMessage);
     } else {
       dispatch(addMachine(addObj));
-      const snackBarMessage = `${newFields.machineName} ID: ${newFields.machineId} has been successfully add to Factory ${id}.`;
+      const snackBarMessage = `${newFields.machineName} ID: ${newFields.machineId} has been successfully added to Factory ${id}.`;
       setSnackBarMessage(snackBarMessage);
     }
     const actionType = 'add';
@@ -196,24 +201,6 @@ export default function SecondaryTable({ type, primaryId }) {
     ];
   }
 
-  let inputFields;
-
-  if (isWarehouse) {
-    inputFields = [
-      { dataKey: 'itemId', dataType: 'number', label: 'Item ID'},
-      { dataKey: 'itemSKU', dataType: 'number', label: 'Item SKU'},
-      { dataKey: 'itemQuantity', dataType: 'number', label: 'Item Quantity'},
-      { dataKey: 'itemName', dataType: 'text', label: 'Item Name'},
-      { dataKey: 'itemDescription', dataType: 'text', label: 'Description'}
-    ];
-  } else {
-    inputFields = [
-      { dataKey: 'machineId', dataType: 'number', label: 'Machine ID'},
-      { dataKey: 'machineName', dataType: 'text', label: 'Machine Name'},
-      { dataKey: 'machineDescription', dataType: 'text', label: 'Description'}
-    ];
-  }
-
   return (
       <div className="m-1 secondary-table">
         <Snackbar
@@ -289,7 +276,7 @@ export default function SecondaryTable({ type, primaryId }) {
           </DialogActions>  
         </Dialog>
         <MaterialTable
-          title={ title }
+          title={ secondaryTableTitle }
           columns={ columns }
           data={ secondaryDetail }
           localization={{
