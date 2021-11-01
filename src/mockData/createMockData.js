@@ -85,7 +85,7 @@ async function getInventory () {
             const itemQuantity = getRandomInt(500000)
             let itemName = await getText(1)
             itemName = itemName.split(' ')[0]
-            const itemDescription = await getText()
+            const itemDescription = await getText(10)
             const inventoryItem = {
                 warehouseId,
                 itemId,
@@ -114,7 +114,7 @@ async function getMachines () {
             const machineId = subI
             let machineName = await getText(1)
             machineName = machineName.split(' ')[0]
-            const machineDescription = await getText()
+            const machineDescription = await getText(5)
             const machine = {
                 factoryId,
                 machineId,
@@ -153,8 +153,8 @@ async function getFactories () {
     fs.writeFile('factories.json', JSON.stringify(factories), 'utf8', err => err ? console.log(err) : '');
 }
 
-getMachines()
+// getMachines()
 // getFactories()
 // getWarehouses()
-// getInventory()
+getInventory()
 

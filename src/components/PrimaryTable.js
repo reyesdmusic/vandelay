@@ -12,22 +12,40 @@ import ToolTip from '@mui/material/Tooltip';
 import { useSelector, useDispatch } from 'react-redux';
 import { setFactoryDetail, setWarehouseDetail, setInventoryDetail, setMachineDetail, setActiveDetailClass } from '../redux/actions'
 
+// Primary table is displayed as a side bar on larger screens
+// Primary Data is either Warehouse data or Factory data
 export default function PrimaryTable({ type }) {
-  const isWarehouse = type === 'Warehouses'
+  const isWarehouse = type === 'Warehouses';
+
+  const dispatch = useDispatch();
+
   const primaryData = useSelector(state => isWarehouse ? state.allWarehousesReducer : state.allFactoriesReducer);
   const secondaryData = useSelector(state => isWarehouse ? state.allInventoryReducer : state.allMachinesReducer);
-  const dispatch = useDispatch()
-  const fieldId = isWarehouse ? 'warehouseId' : 'factoryId'
-  const fieldName = isWarehouse ? 'warehouseName' : 'factoryName'
+  
+  const fieldId = isWarehouse ? 'warehouseId' : 'factoryId';
+  const fieldName = isWarehouse ? 'warehouseName' : 'factoryName';
 
   useEffect(() => {
-    const firstRowEl = document.querySelector('tr[path="0"]')
-    firstRowEl.classList.add('active-row')
+    const firstRowEl = document.querySelector('tr[path="0"]');
+    firstRowEl.classList.add('active-row');
+  }, [])
+
+  useEffect(() => {
+    const tableHeaderSpacingEl = document.querySelector('.MTableToolbar-spacer-7');
+
+    if (tableHeaderSpacingEl) {
+      tableHeaderSpacingEl.remove();
+    }
+
+    const searchInputEl = document.querySelector('.table-container .MuiFormControl-root.MuiTextField-root.MTableToolbar-searchField-10');
+    if (searchInputEl) {
+      searchInputEl.classList.add('primary-search-input');
+    }
   }, [])
 
   return (
       <div className='table-container'>
-        <h2>{type}</h2>
+        <h2 class="primary">{type.toUpperCase()}</h2>
         <MaterialTable
           title=""
           columns={[
@@ -58,12 +76,12 @@ export default function PrimaryTable({ type }) {
                 return (
                   <div>
                     <div>
-                      <span>{name}</span>
+                      <span className="primary">{name}</span>
                       <ToolTip title={description} placement="right-start" arrow>
                         <InfoOutlinedIcon fontSize="small" className="info-icon" />
                       </ToolTip>
                     </div>
-                    <div className="fs-p75 secondary">
+                    <div className="fs-p75">
                       <div>{address}</div>
                       <div>{cityStateCountry}</div>
                     </div>

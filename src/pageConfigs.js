@@ -1,11 +1,11 @@
 const pageConfigs = [
     {
         type: 'Warehouses',
-        url: '/warehouses'
+        url: '/vandelay/warehouses'
     },
     {
         type: 'Factories',
-        url: '/factories'
+        url: '/vandelay/factories'
     }
 ]
 

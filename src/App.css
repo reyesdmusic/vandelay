@@ -5,7 +5,6 @@ body {
 
 .App {
   text-align: center;
-  color: darkslategrey;
 }
 
 nav {
@@ -13,12 +12,18 @@ nav {
   justify-content: space-around;
   align-items: center;
   min-height: 10vh;
-  background: aliceblue;
+  background: rgb(65, 0, 173);
+  background: linear-gradient(
+    90deg,
+    rgba(65, 0, 173, 1) 0%,
+    rgba(9, 9, 121, 1) 47%,
+    rgba(62, 0, 182, 1) 100%
+  );
 }
 
 a {
   text-decoration: none;
-  color: darkslategrey;
+  color: white;
 }
 
 .fs-p75 {
@@ -29,16 +34,35 @@ a {
   font-size: 1.5rem;
 }
 
+.fs-1p25 {
+  font-size: 1.25rem;
+}
+
 .m-1 {
   margin: 1rem;
 }
 
-.secondary {
-  color: dodgerblue;
+.w-50-percent {
+  width: 50%;
+}
+
+.dialog-warning {
+  color: black;
+}
+
+.primary,
+.MuiTypography-h6,
+.MuiButton-text.MuiButton-textPrimary {
+  color: rgb(51, 0, 145);
+}
+
+.MuiTypography-h6 {
+  font-weight: 600;
 }
 
 .active-link {
-  color: dodgerblue;
+  color: rgb(184, 217, 255);
+  font-weight: 600;
 }
 
 .display-flex {
@@ -54,6 +78,10 @@ a {
 .flex-start {
   display: flex;
   align-content: flex-start;
+}
+
+.align-self-center {
+  align-self: center;
 }
 
 .table-container {
@@ -83,7 +111,12 @@ a {
 }
 
 .active-row {
-  background: aliceblue !important;
+  background: rgb(235, 235, 235) !important;
+}
+
+.primary-search-input {
+  padding: 0;
+  width: 100%;
 }
 
 #back-button {

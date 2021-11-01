@@ -8,11 +8,7 @@ import allReducers from './redux/reducers';
 import { Provider } from 'react-redux';
 
 function App() {
-
-// STORE -> GLOBALIZED STATE
-let store = createStore(allReducers,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
+const store = createStore(allReducers,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 
   return (
     <Provider store= {store}>
@@ -20,17 +16,14 @@ let store = createStore(allReducers,
         <div className="App">
           <Nav pages={pageConfigs} />
           <Switch>
-            <Route exact path="/">
-              <Redirect to="/warehouses" />
+            <Route exact path="/vandelay">
+              <Redirect to="/vandelay/warehouses" />
             </Route>
             {pageConfigs.map(({ type, url }) => (
               <Route
                 key={type} 
                 path={url} 
-                render={props => (
-                  <PageContainer { ...props } 
-                    type={type} 
-                  />)}
+                render={props => (<PageContainer { ...props } type={type} />)}
               />))}
           </Switch>
         </div>

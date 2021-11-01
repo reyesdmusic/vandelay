@@ -1,5 +1,7 @@
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
 import MaterialTable from "material-table";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -10,7 +12,6 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useState } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -21,19 +22,28 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteItem, deleteMachine, editItem, editMachine, addItem, addMachine, setActiveDetailClass } from '../redux/actions'
 
+// Secondary table displays Inventory or Machine data
+// CRUD functionality is enabled within this component
 export default function SecondaryTable({ type, primaryId }) {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openAddModal, setOpenAddModal] = useState(false);
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const [snackBarMessage, setSnackBarMessage] = useState("Success!");
   const [editData, setEditData] = useState({});
-  const dispatch = useDispatch()
-  const isWarehouse = type === 'Warehouses'
+
+  const isWarehouse = type === 'Warehouses';
+
+  const dispatch = useDispatch();
+  
+  // secondaryDetail is either the Inventory Detail or the Machine Detail
+  // Set the properties based on whether we are in Warehouse mode or Factory mode
   const secondaryDetail = useSelector(state => isWarehouse ? state.inventoryDetailReducer : state.machineDetailReducer);
-  const activeDetailClass = useSelector(state => state.activeDetailClassReducer);
-  const title = isWarehouse ? 'INVENTORY ITEMS' : 'MACHINES'
-  const primaryIdKey = isWarehouse ? 'warehouseId' : 'factoryId'
-  const secondaryIdKey = isWarehouse ? 'itemId' : 'machineId'
-  const secondaryNameKey = isWarehouse ? 'itemName' : 'machineName'
+  const title = isWarehouse ? 'INVENTORY ITEMS' : 'MACHINES';
+  const primaryIdKey = isWarehouse ? 'warehouseId' : 'factoryId';
+  const secondaryIdKey = isWarehouse ? 'itemId' : 'machineId';
+  const secondaryNameKey = isWarehouse ? 'itemName' : 'machineName';
+  const id = (primaryId || secondaryDetail[0][primaryIdKey] ) || (editData[primaryIdKey] || 0);
 
   const handleClickOpen = ({ event, rowData, actionType }) => {
     setEditData(rowData);
@@ -48,49 +58,69 @@ export default function SecondaryTable({ type, primaryId }) {
       case 'add':
         setOpenAddModal(true);
         break;
+      default:
+        break;
     }
   };
 
   const handleDelete = () => {
-    const id = (primaryId || secondaryDetail[0][primaryIdKey] ) || (editData[primaryIdKey] || 0)
     if (isWarehouse) {
-      dispatch(deleteItem(id, editData[secondaryIdKey]))
+      dispatch(deleteItem(id, editData[secondaryIdKey]));
+      const snackBarMessage = `Item ID: ${editData[secondaryIdKey]} has been successfully deleted.`
+      setSnackBarMessage(snackBarMessage)
     } else {
-      dispatch(deleteMachine(id, editData[secondaryIdKey]))
+      dispatch(deleteMachine(id, editData[secondaryIdKey]));
+      const snackBarMessage = `Machine ID: ${editData[secondaryIdKey]} has been successfully deleted.`
+      setSnackBarMessage(snackBarMessage)
     }
-    const actionType = 'delete'
+    const actionType = 'delete';
     handleClose(actionType);
   };
 
   const handleEdit = (e) => {
-    const formEl = e.target.parentNode.parentNode
-    const inputs = formEl.querySelectorAll('input')
-    const id = (primaryId || secondaryDetail[0][primaryIdKey] ) || (editData[primaryIdKey] || 0)
-    const originalIds = { originalPrimaryId: id, originalSecondaryId: editData[secondaryIdKey] }
-    const newFields = {}
-    inputs.forEach(input => newFields[input.parentNode.parentNode.dataset.key] = input.type === 'number' ? +input.value : input.value)
-    const editObj = { originalIds, newFields }
+
+    // Grab all the form inputs from the modal and store its values in an object
+    // Use that object as payload for API call
+    const formEl = e.target.parentNode.parentNode;
+    const inputs = formEl.querySelectorAll('input');
+    const originalIds = { originalPrimaryId: id, originalSecondaryId: editData[secondaryIdKey] };
+    const newFields = {};
+    inputs.forEach(input => newFields[input.parentNode.parentNode.dataset.key] = input.type === 'number' ? +input.value : input.value);
+    const editObj = { originalIds, newFields };
+
     if (isWarehouse) {
-      dispatch(editItem(editObj))
+      dispatch(editItem(editObj));
+      const snackBarMessage = `Item ID: ${editData[secondaryIdKey]} has been successfully edited and saved!`;
+      setSnackBarMessage(snackBarMessage);
     } else {
-      dispatch(editMachine(editObj))
+      dispatch(editMachine(editObj));
+      const snackBarMessage = `Machine ID: ${editData[secondaryIdKey]} has been successfully edited and saved!`;
+      setSnackBarMessage(snackBarMessage);
     }
-    const actionType = 'edit'
+    const actionType = 'edit';
     handleClose(actionType);
   };
 
   const handleAdd = (e) => {
-    const formEl = e.target.parentNode.parentNode
-    const inputs = formEl.querySelectorAll('input')
-    const newFields = { [primaryIdKey]: primaryId }
-    inputs.forEach(input => newFields[input.parentNode.parentNode.dataset.key] = input.type === 'number' ? +input.value : input.value)
-    const addObj = { newFields }
+
+    // Grab all the form inputs from the modal and store its values in an object
+    // Use that object as payload for API call
+    const formEl = e.target.parentNode.parentNode;
+    const inputs = formEl.querySelectorAll('input');
+    const newFields = { [primaryIdKey]: id };
+    inputs.forEach(input => newFields[input.parentNode.parentNode.dataset.key] = input.type === 'number' ? +input.value : input.value);
+    const addObj = { newFields };
+
     if (isWarehouse) {
-      dispatch(addItem(addObj))
+      dispatch(addItem(addObj));
+      const snackBarMessage = `${newFields.itemName} ID: ${newFields.itemId} has been successfully add to Warehouse ${id}.`;
+      setSnackBarMessage(snackBarMessage);
     } else {
-      dispatch(addMachine(addObj))
+      dispatch(addMachine(addObj));
+      const snackBarMessage = `${newFields.machineName} ID: ${newFields.machineId} has been successfully add to Factory ${id}.`;
+      setSnackBarMessage(snackBarMessage);
     }
-    const actionType = 'add'
+    const actionType = 'add';
     handleClose(actionType);
   };
 
@@ -105,12 +135,19 @@ export default function SecondaryTable({ type, primaryId }) {
       case 'add':
         setOpenAddModal(false);
         break;
+      default:
+        break;
     }
-    if (isCancel) return
-    dispatch(setActiveDetailClass())
-  };
+    if (isCancel) return;
+    setOpenSnackBar(true);
+    dispatch(setActiveDetailClass());
+  }
 
-  let columns = []
+  const handleCloseSnackBar = () => {
+    setOpenSnackBar(false);
+  }
+
+  let columns = [];
   if (isWarehouse) {
     columns = [
       {
@@ -138,7 +175,7 @@ export default function SecondaryTable({ type, primaryId }) {
         field: "itemDescription",
         width: "40%"
       }
-    ]
+    ];
   } else {
     columns = [
       {
@@ -156,31 +193,41 @@ export default function SecondaryTable({ type, primaryId }) {
         field: "machineDescription",
         width: "70%"
       }
-    ]
+    ];
   }
 
-  let inputFields
+  let inputFields;
 
   if (isWarehouse) {
     inputFields = [
-      // { dataKey: 'warehouseId', dataType: 'number', label: 'Warehouse ID'},
       { dataKey: 'itemId', dataType: 'number', label: 'Item ID'},
       { dataKey: 'itemSKU', dataType: 'number', label: 'Item SKU'},
       { dataKey: 'itemQuantity', dataType: 'number', label: 'Item Quantity'},
       { dataKey: 'itemName', dataType: 'text', label: 'Item Name'},
       { dataKey: 'itemDescription', dataType: 'text', label: 'Description'}
-    ]
+    ];
   } else {
     inputFields = [
-      // { dataKey: 'factoryId', dataType: 'number', label: 'Factory ID'},
       { dataKey: 'machineId', dataType: 'number', label: 'Machine ID'},
       { dataKey: 'machineName', dataType: 'text', label: 'Machine Name'},
       { dataKey: 'machineDescription', dataType: 'text', label: 'Description'}
-    ]
+    ];
   }
 
   return (
       <div className="m-1 secondary-table">
+        <Snackbar
+          open={openSnackBar} 
+          autoHideDuration={4000} 
+          onClose={handleCloseSnackBar} 
+          anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center"
+          }}>
+          <Alert onClose={handleCloseSnackBar} severity="success" >
+            {snackBarMessage}
+          </Alert>
+        </Snackbar>
          <Dialog open={openAddModal}>
           <DialogTitle>ADD NEW {isWarehouse ? 'ITEM' : 'MACHINE'}</DialogTitle>
             <DialogContent>
@@ -196,7 +243,6 @@ export default function SecondaryTable({ type, primaryId }) {
               variant="standard"
             />
             })}
-            
           </DialogContent>
           <DialogActions>
             <Button onClick={() => handleClose('add', true)}>CANCEL</Button>
@@ -211,7 +257,7 @@ export default function SecondaryTable({ type, primaryId }) {
         >
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Are you sure you want to remove {editData[secondaryNameKey]} (ID: {editData[secondaryIdKey]})?
+              <span className="dialog-warning fs-1p25">Are you sure you want to remove {editData[secondaryNameKey]} (ID: {editData[secondaryIdKey]})?</span>
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -246,7 +292,6 @@ export default function SecondaryTable({ type, primaryId }) {
           title={ title }
           columns={ columns }
           data={ secondaryDetail }
-          options={{ pageSize: 5, actionsColumnIndex: -1 }}
           localization={{
             header: {
                 actions: 'ACTIONS'
