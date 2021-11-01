@@ -9,12 +9,13 @@ import { setActiveDetailClass } from '../redux/actions';
 // Primary Data (either Warehouse or Factory data) is displayed at the top
 // Secondary Data (either Inventory or Machines) is displayed within SecondaryTable
 function DetailSection({ config }) {
-  const { primaryDetailReducer } = config;
+  const { primaryReducer } = config;
 
   const dispatch = useDispatch();
-
-  const primaryDetail = useSelector(state => state[primaryDetailReducer]);
-  const activeDetailClass = useSelector(state => state.activeDetailClassReducer);
+  const primaryData = useSelector(state => state[primaryReducer]);
+  const detailId = useSelector(state => state.detailIdReducer);
+  const primaryDetail = primaryData[detailId]
+  const activeDetailClass = useSelector(state => state.activeRowClassReducer);
   const { warehouseId, warehouseName, warehouseAddress, warehouseDescription, factoryId, factoryName, factoryAddress, factoryDescription } = primaryDetail;
   const addressData = warehouseAddress || factoryAddress;
   const primaryId = warehouseId || factoryId;

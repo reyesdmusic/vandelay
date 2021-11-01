@@ -24,7 +24,7 @@ import { deleteItem, deleteMachine, editItem, editMachine, addItem, addMachine, 
 
 // Secondary table displays Inventory or Machine data
 // CRUD functionality is enabled within this component
-export default function SecondaryTable({ primaryId, config }) {
+export default function SecondaryTable({ config }) {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -33,12 +33,13 @@ export default function SecondaryTable({ primaryId, config }) {
   const [editData, setEditData] = useState({});
 
   const { 
-    isWarehouse, 
+    isWarehouse,
+    primaryReducer,
+    secondaryReducer,
     primaryIdKey, 
     secondaryNameKey, 
     secondaryIdKey, 
-    secondaryTableTitle, 
-    secondaryDetailReducer,
+    secondaryTableTitle,
     inputFields 
   } = config;
 
@@ -46,9 +47,11 @@ export default function SecondaryTable({ primaryId, config }) {
   
   // secondaryDetail is either the Inventory Detail or the Machine Detail
   // Set the properties based on whether we are in Warehouse mode or Factory mode
-  const secondaryDetail = useSelector(state => state[secondaryDetailReducer]);
-  
-  const id = (primaryId || secondaryDetail[0][primaryIdKey] ) || (editData[primaryIdKey] || 0);
+  const primaryData = useSelector(state => state[primaryReducer]);
+  const secondaryData = useSelector(state => state[secondaryReducer]);
+  const detailId = useSelector(state => state.detailIdReducer);
+  const primaryDetail = primaryData[detailId]
+  const secondaryDetail = secondaryData[detailId];
 
   const handleClickOpen = ({ rowData, actionType }) => {
     setEditData(rowData);
@@ -70,11 +73,11 @@ export default function SecondaryTable({ primaryId, config }) {
 
   const handleDelete = () => {
     if (isWarehouse) {
-      dispatch(deleteItem(id, editData[secondaryIdKey]));
+      dispatch(deleteItem(detailId, editData[secondaryIdKey]));
       const snackBarMessage = `Item ID: ${editData[secondaryIdKey]} has been successfully deleted.`
       setSnackBarMessage(snackBarMessage)
     } else {
-      dispatch(deleteMachine(id, editData[secondaryIdKey]));
+      dispatch(deleteMachine(detailId, editData[secondaryIdKey]));
       const snackBarMessage = `Machine ID: ${editData[secondaryIdKey]} has been successfully deleted.`
       setSnackBarMessage(snackBarMessage)
     }
@@ -88,7 +91,7 @@ export default function SecondaryTable({ primaryId, config }) {
     // Use that object as payload for API call
     const formEl = e.target.parentNode.parentNode;
     const inputs = formEl.querySelectorAll('input');
-    const originalIds = { originalPrimaryId: id, originalSecondaryId: editData[secondaryIdKey] };
+    const originalIds = { originalPrimaryId: detailId, originalSecondaryId: editData[secondaryIdKey] };
     const newFields = {};
     inputs.forEach(input => newFields[input.parentNode.parentNode.dataset.key] = input.type === 'number' ? +input.value : input.value);
     const editObj = { originalIds, newFields };
@@ -112,17 +115,17 @@ export default function SecondaryTable({ primaryId, config }) {
     // Use that object as payload for API call
     const formEl = e.target.parentNode.parentNode;
     const inputs = formEl.querySelectorAll('input');
-    const newFields = { [primaryIdKey]: id };
+    const newFields = { [primaryIdKey]: detailId };
     inputs.forEach(input => newFields[input.parentNode.parentNode.dataset.key] = input.type === 'number' ? +input.value : input.value);
     const addObj = { newFields };
 
     if (isWarehouse) {
       dispatch(addItem(addObj));
-      const snackBarMessage = `${newFields.itemName} ID: ${newFields.itemId} has been successfully added to Warehouse ${id}.`;
+      const snackBarMessage = `${newFields.itemName} ID: ${newFields.itemId} has been successfully added to Warehouse ${detailId}.`;
       setSnackBarMessage(snackBarMessage);
     } else {
       dispatch(addMachine(addObj));
-      const snackBarMessage = `${newFields.machineName} ID: ${newFields.machineId} has been successfully added to Factory ${id}.`;
+      const snackBarMessage = `${newFields.machineName} ID: ${newFields.machineId} has been successfully added to Factory ${detailId}.`;
       setSnackBarMessage(snackBarMessage);
     }
     const actionType = 'add';

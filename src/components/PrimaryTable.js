@@ -10,32 +10,22 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ToolTip from '@mui/material/Tooltip';
 import { useSelector, useDispatch } from 'react-redux';
-import { setFactoryDetail, setWarehouseDetail, setInventoryDetail, setMachineDetail, setActiveDetailClass } from '../redux/actions'
+import { setDetailId, setActiveDetailClass } from '../redux/actions'
 
 // Primary table is displayed as a side bar on larger screens
 // Primary Data is either Warehouse data or Factory data
 export default function PrimaryTable({ config }) {
-  const { isWarehouse, primaryReducer, secondaryReducer, primaryIdKey, primaryNameKey, secondaryIdKey, type } = config;
+  const { primaryReducer, primaryIdKey, primaryNameKey, type } = config;
 
   const dispatch = useDispatch();
 
   const primaryData = useSelector(state => state[primaryReducer]);
-  const secondaryData = useSelector(state => state[secondaryReducer]);
 
   useEffect(() => {
 
     // on compnent did mount, set first row as active
     const firstRowEl = document.querySelector('tr[path="0"]');
     firstRowEl.classList.add('active-row');
-
-    // on component did mount, set the primary data and secondary data to first items in arrays
-    if (isWarehouse) {
-      dispatch(setWarehouseDetail(0, primaryData))
-      dispatch(setInventoryDetail(0, secondaryData))
-    } else {
-      dispatch(setFactoryDetail(0, primaryData))
-      dispatch(setMachineDetail(0, secondaryData))
-    }
 
     // remove extra space element in primary table header
     const tableHeaderSpacingEl = document.querySelector('.MTableToolbar-spacer-7');
@@ -61,7 +51,7 @@ export default function PrimaryTable({ config }) {
               field: primaryIdKey,
               width: "15%",
               render: rowData => {
-                const id = rowData[secondaryIdKey]
+                const id = rowData[primaryIdKey]
                 return (
                   <div>
                     <div>{id}</div>
@@ -109,14 +99,7 @@ export default function PrimaryTable({ config }) {
               rowEl.classList.add('active-row')
             }
             
-            if (isWarehouse) {
-              dispatch(setWarehouseDetail(rowData[primaryIdKey], primaryData))
-              dispatch(setInventoryDetail(rowData[primaryIdKey], secondaryData))
-            } else {
-              dispatch(setFactoryDetail(rowData[primaryIdKey], primaryData))
-              dispatch(setMachineDetail(rowData[primaryIdKey], secondaryData))
-            }
-
+            dispatch(setDetailId(rowData[primaryIdKey]))
             dispatch(setActiveDetailClass())
             
             event.stopPropagation();

@@ -2,11 +2,8 @@ import allWarehousesReducer from './allWarehouses';
 import allFactoriesReducer from './allFactories';
 import allInventoryReducer from './allInventory';
 import allMachinesReducer from './allMachines';
-import factoryDetailReducer from './factoryDetail';
-import warehouseDetailReducer from './warehouseDetail';
-import inventoryDetailReducer from './inventoryDetail';
-import machineDetailReducer from './machineDetail';
-import activeDetailClassReducer from './activeDetailClass';
+import detailIdReducer from './detailId';
+import activeRowClassReducer from './activeRowClass';
 import { combineReducers } from 'redux';
 
 const allReducers = combineReducers({
@@ -14,11 +11,8 @@ const allReducers = combineReducers({
     allFactoriesReducer,
     allInventoryReducer,
     allMachinesReducer,
-    factoryDetailReducer,
-    warehouseDetailReducer,
-    inventoryDetailReducer,
-    machineDetailReducer,
-    activeDetailClassReducer
+    detailIdReducer,
+    activeRowClassReducer
 })
 
 export default allReducers;
