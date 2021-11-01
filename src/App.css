@@ -34,7 +34,11 @@ a {
 }
 
 .secondary {
-  color: mediumpurple;
+  color: dodgerblue;
+}
+
+.active-link {
+  color: dodgerblue;
 }
 
 .display-flex {
@@ -76,6 +80,10 @@ a {
 .detail-section {
   width: calc(100vw - 400px);
   transition: transform 0.3s ease-in-out;
+}
+
+.active-row {
+  background: aliceblue !important;
 }
 
 #back-button {

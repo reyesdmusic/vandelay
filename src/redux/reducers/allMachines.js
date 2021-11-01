@@ -14,8 +14,8 @@ const allMachinesReducer = (state = machines, action) => {
             const { originalIds, newFields } = action.payload
             const { originalPrimaryId, originalSecondaryId } = originalIds
             const newAllInventory = {...state}
-
-            const itemIndex = newAllInventory[originalPrimaryId].findIndex(item => item.machineId === originalSecondaryId)
+            const inventoryDetail = newAllInventory[originalPrimaryId]
+            const itemIndex = inventoryDetail.findIndex(item => item.machineId === originalSecondaryId)
             
             const newInventoryDetail = [...newAllInventory[originalPrimaryId]]
             newInventoryDetail[itemIndex] = {...newFields}

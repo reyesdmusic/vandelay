@@ -21,7 +21,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteItem, deleteMachine, editItem, editMachine, addItem, addMachine, setActiveDetailClass } from '../redux/actions'
 
-export default function SecondaryTable({ type }) {
+export default function SecondaryTable({ type, primaryId }) {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -34,6 +34,7 @@ export default function SecondaryTable({ type }) {
   const primaryIdKey = isWarehouse ? 'warehouseId' : 'factoryId'
   const secondaryIdKey = isWarehouse ? 'itemId' : 'machineId'
   const secondaryNameKey = isWarehouse ? 'itemName' : 'machineName'
+
   const handleClickOpen = ({ event, rowData, actionType }) => {
     setEditData(rowData);
 
@@ -51,10 +52,11 @@ export default function SecondaryTable({ type }) {
   };
 
   const handleDelete = () => {
+    const id = (primaryId || secondaryDetail[0][primaryIdKey] ) || (editData[primaryIdKey] || 0)
     if (isWarehouse) {
-      dispatch(deleteItem(editData[primaryIdKey], editData[secondaryIdKey]))
+      dispatch(deleteItem(id, editData[secondaryIdKey]))
     } else {
-      dispatch(deleteMachine(editData[primaryIdKey], editData[secondaryIdKey]))
+      dispatch(deleteMachine(id, editData[secondaryIdKey]))
     }
     const actionType = 'delete'
     handleClose(actionType);
@@ -63,7 +65,8 @@ export default function SecondaryTable({ type }) {
   const handleEdit = (e) => {
     const formEl = e.target.parentNode.parentNode
     const inputs = formEl.querySelectorAll('input')
-    const originalIds = { originalPrimaryId: editData[primaryIdKey], originalSecondaryId: editData[secondaryIdKey] }
+    const id = (primaryId || secondaryDetail[0][primaryIdKey] ) || (editData[primaryIdKey] || 0)
+    const originalIds = { originalPrimaryId: id, originalSecondaryId: editData[secondaryIdKey] }
     const newFields = {}
     inputs.forEach(input => newFields[input.parentNode.parentNode.dataset.key] = input.type === 'number' ? +input.value : input.value)
     const editObj = { originalIds, newFields }
@@ -79,9 +82,7 @@ export default function SecondaryTable({ type }) {
   const handleAdd = (e) => {
     const formEl = e.target.parentNode.parentNode
     const inputs = formEl.querySelectorAll('input')
-    const primaryIdFieldName = isWarehouse ? 'warehouseId' : 'factoryId'
-    const primaryId = secondaryDetail[0][primaryIdFieldName]
-    const newFields = { [primaryIdFieldName]: primaryId }
+    const newFields = { [primaryIdKey]: primaryId }
     inputs.forEach(input => newFields[input.parentNode.parentNode.dataset.key] = input.type === 'number' ? +input.value : input.value)
     const addObj = { newFields }
     if (isWarehouse) {

@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, useEffect} from 'react';
 import MaterialTable from "material-table";
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -19,6 +19,11 @@ export default function PrimaryTable({ type }) {
   const dispatch = useDispatch()
   const fieldId = isWarehouse ? 'warehouseId' : 'factoryId'
   const fieldName = isWarehouse ? 'warehouseName' : 'factoryName'
+
+  useEffect(() => {
+    const firstRowEl = document.querySelector('tr[path="0"]')
+    firstRowEl.classList.add('active-row')
+  }, [])
 
   return (
       <div className='table-container'>
@@ -45,7 +50,7 @@ export default function PrimaryTable({ type }) {
               render: rowData => {
                 const { warehouseName, warehouseAddress, warehouseDescription, factoryName, factoryAddress, factoryDescription } = rowData
                 const addressData = warehouseAddress || factoryAddress
-                const { buildingName, streetLine1, streetLine2, city, stateProvince, zipPostalCode, country } = addressData
+                const { streetLine1, streetLine2, city, stateProvince, zipPostalCode, country } = addressData
                 const name = warehouseName || factoryName
                 const address = `${streetLine1}${streetLine2 ? ` ${streetLine2}` : ''}`
                 const description = warehouseDescription || factoryDescription
@@ -69,7 +74,13 @@ export default function PrimaryTable({ type }) {
           data={primaryData}
           options={{ pageSize: 10 }}
           onRowClick={(event, rowData) => {
-
+            const prevActiveEl = document.querySelector('.active-row')
+            if (prevActiveEl) {
+              prevActiveEl.classList.remove('active-row')
+            }
+            const rowId = rowData.tableData.id
+            const rowEl = document.querySelector(`tr[path="${rowId}"]`)
+            rowEl.classList.add('active-row')
             if (isWarehouse) {
               dispatch(setWarehouseDetail(rowData[fieldId], primaryData))
               dispatch(setInventoryDetail(rowData[fieldId], secondaryData))
