@@ -38,6 +38,8 @@ export default function PrimaryTable({ config }) {
     if (searchInputEl) {
       searchInputEl.classList.add('primary-search-input');
     }
+
+    dispatch(setDetailId(0))
   }, [])
 
   return (
