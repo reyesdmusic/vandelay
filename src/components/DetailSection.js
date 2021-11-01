@@ -1,10 +1,15 @@
 import SecondaryTable from './SecondaryTable';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import Button from '@mui/material/Button';
+import { setActiveDetailClass } from '../redux/actions'
 
 
 function DetailSection({ type }) {
+  const dispatch = useDispatch()
   const isWarehouse = type === 'Warehouses'
   const primaryDetail = useSelector(state => isWarehouse ? state.warehouseDetailReducer : state.factoryDetailReducer);
+  const activeDetailClass = useSelector(state => state.activeDetailClassReducer);
   const { warehouseName, warehouseAddress, warehouseDescription, factoryName, factoryAddress, factoryDescription } = primaryDetail
   const addressData = warehouseAddress || factoryAddress
   const { buildingName, streetLine1, streetLine2, city, stateProvince, zipPostalCode, country } = addressData
@@ -13,8 +18,13 @@ function DetailSection({ type }) {
   const cityStateCountry = `${city}, ${stateProvince} ${zipPostalCode} ${country}`
   const description = warehouseDescription || factoryDescription
 
+  
+
   return (
-    <section className="detail-section flex-column-center">
+    <section className={`detail-section flex-column-center ${activeDetailClass ? 'active' : ''}`}>
+      <div id="back-button" className="flex-start">
+        <Button onClick={() => dispatch(setActiveDetailClass())}><ArrowBackIosIcon /></Button>
+      </div>
       <h2>{name}</h2>
       <b>{buildingName}</b>
       <span>{address}</span>

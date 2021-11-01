@@ -6,6 +6,7 @@ import factoryDetailReducer from './factoryDetail';
 import warehouseDetailReducer from './warehouseDetail';
 import inventoryDetailReducer from './inventoryDetail';
 import machineDetailReducer from './machineDetail';
+import activeDetailClassReducer from './activeDetailClass';
 import { combineReducers } from 'redux';
 
 const allReducers = combineReducers({
@@ -16,7 +17,8 @@ const allReducers = combineReducers({
     factoryDetailReducer,
     warehouseDetailReducer,
     inventoryDetailReducer,
-    machineDetailReducer
+    machineDetailReducer,
+    activeDetailClassReducer
 })
 
 export default allReducers;

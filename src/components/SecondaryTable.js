@@ -19,7 +19,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteItem, deleteMachine, editItem, editMachine, addItem, addMachine } from '../redux/actions'
+import { deleteItem, deleteMachine, editItem, editMachine, addItem, addMachine, setActiveDetailClass } from '../redux/actions'
 
 export default function SecondaryTable({ type }) {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -29,6 +29,7 @@ export default function SecondaryTable({ type }) {
   const dispatch = useDispatch()
   const isWarehouse = type === 'Warehouses'
   const secondaryDetail = useSelector(state => isWarehouse ? state.inventoryDetailReducer : state.machineDetailReducer);
+  const activeDetailClass = useSelector(state => state.activeDetailClassReducer);
   const title = isWarehouse ? 'INVENTORY ITEMS' : 'MACHINES'
   const primaryIdKey = isWarehouse ? 'warehouseId' : 'factoryId'
   const secondaryIdKey = isWarehouse ? 'itemId' : 'machineId'
@@ -92,7 +93,7 @@ export default function SecondaryTable({ type }) {
     handleClose(actionType);
   };
 
-  const handleClose = (actionType) => {
+  const handleClose = (actionType, isCancel) => {
     switch (actionType) {
       case 'edit':
         setOpenEditModal(false);
@@ -104,6 +105,8 @@ export default function SecondaryTable({ type }) {
         setOpenAddModal(false);
         break;
     }
+    if (isCancel) return
+    dispatch(setActiveDetailClass())
   };
 
   let columns = []
@@ -177,7 +180,7 @@ export default function SecondaryTable({ type }) {
 
   return (
       <div className="m-1 secondary-table">
-         <Dialog open={openAddModal} onClose={() => handleClose('add')}>
+         <Dialog open={openAddModal}>
           <DialogTitle>ADD NEW {isWarehouse ? 'ITEM' : 'MACHINE'}</DialogTitle>
             <DialogContent>
             {inputFields.map((field) => {
@@ -195,7 +198,7 @@ export default function SecondaryTable({ type }) {
             
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => handleClose('add')}>CANCEL</Button>
+            <Button onClick={() => handleClose('add', true)}>CANCEL</Button>
             <Button onClick={handleAdd}>SAVE</Button>
           </DialogActions>  
         </Dialog>
@@ -211,7 +214,7 @@ export default function SecondaryTable({ type }) {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => handleClose('delete')}>NO</Button>
+            <Button onClick={() => handleClose('delete', true)}>NO</Button>
             <Button onClick={handleDelete} autoFocus>YES, REMOVE</Button>
           </DialogActions>
         </Dialog>
@@ -234,7 +237,7 @@ export default function SecondaryTable({ type }) {
             
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => handleClose('edit')}>CANCEL</Button>
+            <Button onClick={() => handleClose('edit', true)}>CANCEL</Button>
             <Button onClick={handleEdit}>SAVE</Button>
           </DialogActions>  
         </Dialog>

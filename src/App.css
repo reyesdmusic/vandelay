@@ -1,3 +1,8 @@
+html,
+body {
+  height: 100vh;
+}
+
 .App {
   text-align: center;
   color: darkslategrey;
@@ -42,12 +47,17 @@ a {
   align-content: center;
 }
 
+.flex-start {
+  display: flex;
+  align-content: flex-start;
+}
+
 .table-container {
-  width: 460px;
+  width: 400px;
 }
 
 .secondary-table {
-  width: 80%;
+  width: 90%;
   align-self: center;
 }
 
@@ -64,5 +74,56 @@ a {
 }
 
 .detail-section {
-  width: calc(100vw - 460px);
+  width: calc(100vw - 400px);
+  transition: transform 0.3s ease-in-out;
+}
+
+#back-button {
+  display: none;
+}
+
+@media screen and (max-width: 1200px) {
+  .secondary-table {
+    width: 95%;
+  }
+  .table-container {
+    width: 350px;
+  }
+  .detail-section {
+    width: calc(100vw - 350px);
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  body {
+    overflow-x: hidden;
+    height: 100vh;
+  }
+
+  #back-button {
+    display: flex;
+  }
+
+  .secondary-table {
+    width: 100%;
+  }
+  .table-container {
+    width: 100%;
+  }
+  .detail-section {
+    background-color: white;
+    position: absolute;
+    z-index: 3;
+    width: 100%;
+    transform: translateX(100%);
+    -webkit-transform: translateX(100%);
+  }
+
+  .detail-section.active {
+    position: absolute;
+    z-index: 10;
+    transform: translateX(0);
+    -webkit-transform: translateX(0);
+    min-height: 1200px;
+  }
 }

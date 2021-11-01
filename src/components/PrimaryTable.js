@@ -10,7 +10,7 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ToolTip from '@mui/material/Tooltip';
 import { useSelector, useDispatch } from 'react-redux';
-import { setFactoryDetail, setWarehouseDetail, setInventoryDetail, setMachineDetail } from '../redux/actions'
+import { setFactoryDetail, setWarehouseDetail, setInventoryDetail, setMachineDetail, setActiveDetailClass } from '../redux/actions'
 
 export default function PrimaryTable({ type }) {
   const isWarehouse = type === 'Warehouses'
@@ -22,8 +22,9 @@ export default function PrimaryTable({ type }) {
 
   return (
       <div className='table-container'>
+        <h2>{type}</h2>
         <MaterialTable
-          title={type}
+          title=""
           columns={[
             {
               title: "ID",
@@ -46,7 +47,7 @@ export default function PrimaryTable({ type }) {
                 const addressData = warehouseAddress || factoryAddress
                 const { buildingName, streetLine1, streetLine2, city, stateProvince, zipPostalCode, country } = addressData
                 const name = warehouseName || factoryName
-                const address = `${buildingName} ${streetLine1}${streetLine2 ? ` ${streetLine2}` : ''}`
+                const address = `${streetLine1}${streetLine2 ? ` ${streetLine2}` : ''}`
                 const description = warehouseDescription || factoryDescription
                 const cityStateCountry = `${city}, ${stateProvince} ${zipPostalCode} ${country}`
                 return (
@@ -76,6 +77,8 @@ export default function PrimaryTable({ type }) {
               dispatch(setFactoryDetail(rowData[fieldId], primaryData))
               dispatch(setMachineDetail(rowData[fieldId], secondaryData))
             }
+
+            dispatch(setActiveDetailClass())
             
             event.stopPropagation();
           }}

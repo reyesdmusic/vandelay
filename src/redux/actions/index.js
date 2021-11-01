@@ -67,3 +67,9 @@ export const addItem = (addObj) => {
         payload: addObj
     }
 };
+
+export const setActiveDetailClass = () => {
+    return {
+        type: 'setActiveDetailClass'
+    }
+};
