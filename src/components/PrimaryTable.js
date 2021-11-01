@@ -26,17 +26,27 @@ export default function PrimaryTable({ type }) {
   const fieldName = isWarehouse ? 'warehouseName' : 'factoryName';
 
   useEffect(() => {
+
+    // on compnent did mount, set first row as active
     const firstRowEl = document.querySelector('tr[path="0"]');
     firstRowEl.classList.add('active-row');
-  }, [])
 
-  useEffect(() => {
+    // on component did mount, set the primary data and secondary data to first items in arrays
+    if (isWarehouse) {
+      dispatch(setWarehouseDetail(0, primaryData))
+      dispatch(setInventoryDetail(0, secondaryData))
+    } else {
+      dispatch(setFactoryDetail(0, primaryData))
+      dispatch(setMachineDetail(0, secondaryData))
+    }
+
+    // remove extra space element in primary table header
     const tableHeaderSpacingEl = document.querySelector('.MTableToolbar-spacer-7');
-
     if (tableHeaderSpacingEl) {
       tableHeaderSpacingEl.remove();
     }
 
+    // add class to search input
     const searchInputEl = document.querySelector('.table-container .MuiFormControl-root.MuiTextField-root.MTableToolbar-searchField-10');
     if (searchInputEl) {
       searchInputEl.classList.add('primary-search-input');
