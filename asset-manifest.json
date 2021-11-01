@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/vandelay/static/css/main.8f6f3bbf.chunk.css",
-    "main.js": "/vandelay/static/js/main.2801705a.chunk.js",
-    "main.js.map": "/vandelay/static/js/main.2801705a.chunk.js.map",
-    "runtime-main.js": "/vandelay/static/js/runtime-main.2b66fbbe.js",
-    "runtime-main.js.map": "/vandelay/static/js/runtime-main.2b66fbbe.js.map",
-    "static/js/2.49e4a4b3.chunk.js": "/vandelay/static/js/2.49e4a4b3.chunk.js",
-    "static/js/2.49e4a4b3.chunk.js.map": "/vandelay/static/js/2.49e4a4b3.chunk.js.map",
-    "static/js/3.d88e923d.chunk.js": "/vandelay/static/js/3.d88e923d.chunk.js",
-    "static/js/3.d88e923d.chunk.js.map": "/vandelay/static/js/3.d88e923d.chunk.js.map",
+    "main.js": "/vandelay/static/js/main.be956b5d.chunk.js",
+    "main.js.map": "/vandelay/static/js/main.be956b5d.chunk.js.map",
+    "runtime-main.js": "/vandelay/static/js/runtime-main.e203aea6.js",
+    "runtime-main.js.map": "/vandelay/static/js/runtime-main.e203aea6.js.map",
+    "static/js/2.61dcd2a6.chunk.js": "/vandelay/static/js/2.61dcd2a6.chunk.js",
+    "static/js/2.61dcd2a6.chunk.js.map": "/vandelay/static/js/2.61dcd2a6.chunk.js.map",
+    "static/js/3.8c1bea70.chunk.js": "/vandelay/static/js/3.8c1bea70.chunk.js",
+    "static/js/3.8c1bea70.chunk.js.map": "/vandelay/static/js/3.8c1bea70.chunk.js.map",
     "static/js/4.cf0ee1ac.chunk.js": "/vandelay/static/js/4.cf0ee1ac.chunk.js",
     "static/js/4.cf0ee1ac.chunk.js.map": "/vandelay/static/js/4.cf0ee1ac.chunk.js.map",
     "static/js/5.dabf064b.chunk.js": "/vandelay/static/js/5.dabf064b.chunk.js",
@@ -17,15 +17,15 @@
     "static/js/6.c3f1308b.chunk.js.map": "/vandelay/static/js/6.c3f1308b.chunk.js.map",
     "index.html": "/vandelay/index.html",
     "static/css/main.8f6f3bbf.chunk.css.map": "/vandelay/static/css/main.8f6f3bbf.chunk.css.map",
-    "static/js/2.49e4a4b3.chunk.js.LICENSE.txt": "/vandelay/static/js/2.49e4a4b3.chunk.js.LICENSE.txt",
-    "static/js/3.d88e923d.chunk.js.LICENSE.txt": "/vandelay/static/js/3.d88e923d.chunk.js.LICENSE.txt",
+    "static/js/2.61dcd2a6.chunk.js.LICENSE.txt": "/vandelay/static/js/2.61dcd2a6.chunk.js.LICENSE.txt",
+    "static/js/3.8c1bea70.chunk.js.LICENSE.txt": "/vandelay/static/js/3.8c1bea70.chunk.js.LICENSE.txt",
     "static/js/4.cf0ee1ac.chunk.js.LICENSE.txt": "/vandelay/static/js/4.cf0ee1ac.chunk.js.LICENSE.txt",
     "static/js/5.dabf064b.chunk.js.LICENSE.txt": "/vandelay/static/js/5.dabf064b.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.2b66fbbe.js",
-    "static/js/2.49e4a4b3.chunk.js",
+    "static/js/runtime-main.e203aea6.js",
+    "static/js/2.61dcd2a6.chunk.js",
     "static/css/main.8f6f3bbf.chunk.css",
-    "static/js/main.2801705a.chunk.js"
+    "static/js/main.be956b5d.chunk.js"
   ]
 }
