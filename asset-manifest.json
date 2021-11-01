@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/vandelay/static/css/main.8f6f3bbf.chunk.css",
-    "main.js": "/vandelay/static/js/main.84f98c3a.chunk.js",
-    "main.js.map": "/vandelay/static/js/main.84f98c3a.chunk.js.map",
+    "main.js": "/vandelay/static/js/main.6473603e.chunk.js",
+    "main.js.map": "/vandelay/static/js/main.6473603e.chunk.js.map",
     "runtime-main.js": "/vandelay/static/js/runtime-main.2b66fbbe.js",
     "runtime-main.js.map": "/vandelay/static/js/runtime-main.2b66fbbe.js.map",
     "static/js/2.49e4a4b3.chunk.js": "/vandelay/static/js/2.49e4a4b3.chunk.js",
@@ -26,6 +26,6 @@
     "static/js/runtime-main.2b66fbbe.js",
     "static/js/2.49e4a4b3.chunk.js",
     "static/css/main.8f6f3bbf.chunk.css",
-    "static/js/main.84f98c3a.chunk.js"
+    "static/js/main.6473603e.chunk.js"
   ]
 }
