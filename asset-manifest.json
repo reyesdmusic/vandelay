@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/vandelay/static/css/main.0de84cf9.chunk.css",
-    "main.js": "/vandelay/static/js/main.9bd7b013.chunk.js",
-    "main.js.map": "/vandelay/static/js/main.9bd7b013.chunk.js.map",
+    "main.css": "/vandelay/static/css/main.8f6f3bbf.chunk.css",
+    "main.js": "/vandelay/static/js/main.84f98c3a.chunk.js",
+    "main.js.map": "/vandelay/static/js/main.84f98c3a.chunk.js.map",
     "runtime-main.js": "/vandelay/static/js/runtime-main.2b66fbbe.js",
     "runtime-main.js.map": "/vandelay/static/js/runtime-main.2b66fbbe.js.map",
     "static/js/2.49e4a4b3.chunk.js": "/vandelay/static/js/2.49e4a4b3.chunk.js",
@@ -16,7 +16,7 @@
     "static/js/6.c3f1308b.chunk.js": "/vandelay/static/js/6.c3f1308b.chunk.js",
     "static/js/6.c3f1308b.chunk.js.map": "/vandelay/static/js/6.c3f1308b.chunk.js.map",
     "index.html": "/vandelay/index.html",
-    "static/css/main.0de84cf9.chunk.css.map": "/vandelay/static/css/main.0de84cf9.chunk.css.map",
+    "static/css/main.8f6f3bbf.chunk.css.map": "/vandelay/static/css/main.8f6f3bbf.chunk.css.map",
     "static/js/2.49e4a4b3.chunk.js.LICENSE.txt": "/vandelay/static/js/2.49e4a4b3.chunk.js.LICENSE.txt",
     "static/js/3.d88e923d.chunk.js.LICENSE.txt": "/vandelay/static/js/3.d88e923d.chunk.js.LICENSE.txt",
     "static/js/4.cf0ee1ac.chunk.js.LICENSE.txt": "/vandelay/static/js/4.cf0ee1ac.chunk.js.LICENSE.txt",
@@ -25,7 +25,7 @@
   "entrypoints": [
     "static/js/runtime-main.2b66fbbe.js",
     "static/js/2.49e4a4b3.chunk.js",
-    "static/css/main.0de84cf9.chunk.css",
-    "static/js/main.9bd7b013.chunk.js"
+    "static/css/main.8f6f3bbf.chunk.css",
+    "static/js/main.84f98c3a.chunk.js"
   ]
 }
