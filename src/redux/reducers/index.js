@@ -3,7 +3,7 @@ import allFactoriesReducer from './allFactories';
 import allInventoryReducer from './allInventory';
 import allMachinesReducer from './allMachines';
 import detailIdReducer from './detailId';
-import activeRowClassReducer from './activeRowClass';
+import activeDetailClassReducer from './activeDetailClass';
 import { combineReducers } from 'redux';
 
 const allReducers = combineReducers({
@@ -12,7 +12,7 @@ const allReducers = combineReducers({
     allInventoryReducer,
     allMachinesReducer,
     detailIdReducer,
-    activeRowClassReducer
+    activeDetailClassReducer
 })
 
 export default allReducers;

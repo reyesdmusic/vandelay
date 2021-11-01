@@ -148,7 +148,6 @@ export default function SecondaryTable({ config }) {
     }
     if (isCancel) return;
     setOpenSnackBar(true);
-    dispatch(setActiveDetailClass());
   }
 
   const handleCloseSnackBar = () => {

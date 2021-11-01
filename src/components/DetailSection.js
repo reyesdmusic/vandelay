@@ -15,7 +15,7 @@ function DetailSection({ config }) {
   const primaryData = useSelector(state => state[primaryReducer]);
   const detailId = useSelector(state => state.detailIdReducer);
   const primaryDetail = primaryData[detailId]
-  const activeDetailClass = useSelector(state => state.activeRowClassReducer);
+  const activeDetailClass = useSelector(state => state.activeDetailClassReducer);
   const { warehouseId, warehouseName, warehouseAddress, warehouseDescription, factoryId, factoryName, factoryAddress, factoryDescription } = primaryDetail;
   const addressData = warehouseAddress || factoryAddress;
   const primaryId = warehouseId || factoryId;
