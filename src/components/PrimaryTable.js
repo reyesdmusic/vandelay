@@ -98,7 +98,10 @@ export default function PrimaryTable({ type }) {
             }
             const rowId = rowData.tableData.id
             const rowEl = document.querySelector(`tr[path="${rowId}"]`)
-            rowEl.classList.add('active-row')
+            if (rowEl) {
+              rowEl.classList.add('active-row')
+            }
+            
             if (isWarehouse) {
               dispatch(setWarehouseDetail(rowData[fieldId], primaryData))
               dispatch(setInventoryDetail(rowData[fieldId], secondaryData))
